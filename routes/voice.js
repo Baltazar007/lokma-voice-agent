@@ -26,6 +26,8 @@ router.post("/process", async (req, res) => {
   const audioPath = await generateSpeech(aiReply);
 
   const twiml = new VoiceResponse();
+  console.log("🎧 Lien audio envoyé à Twilio :", audioPath);
+
   if (audioPath) {
     twiml.play(audioPath); // joue le fichier MP3
   } else {
