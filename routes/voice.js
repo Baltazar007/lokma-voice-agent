@@ -17,6 +17,7 @@ router.post("/", async (req, res) => {
   });
 
   gather.say("Bonjour et bienvenue chez Lokma. Comment puis-je vous aider ?");
+
   res.type("text/xml").send(twiml.toString());
 });
 
@@ -28,19 +29,21 @@ router.post("/process", async (req, res) => {
   console.log("🤖 Réponse IA :", aiReply);
 
   await sendSummaryEmail(speechText, aiReply);
+
   const audioPath = await generateSpeech(aiReply);
   console.log("🎧 Lien audio envoyé à Twilio :", audioPath);
 
   const twiml = new VoiceResponse();
 
   if (audioPath) {
-    twiml.pause({ length: 1 }); // Ajoute un délai
-    twiml.play("https://lokma-voice-agent.onrender.com/output.mp3");
+    twiml.pause({ length: 1 }); // petit délai
+    twiml.play(audioPath);
   } else {
     twiml.say(aiReply);
   }
 
   twiml.redirect("https://lokma-voice-agent.onrender.com/voice");
+
   res.type("text/xml").send(twiml.toString());
 });
 
