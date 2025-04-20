@@ -13,7 +13,7 @@ const mime = require("mime-types");
 
 app.use((req, res, next) => {
   if (req.url.endsWith(".mp3")) {
-    res.setHeader("Content-Type", mime.getType("mp3"));
+    res.setHeader("Content-Type", "audio/mpeg");
   }
   next();
 });
