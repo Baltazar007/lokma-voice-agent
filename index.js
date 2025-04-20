@@ -1,13 +1,15 @@
 const express = require("express");
+const app = express();
 const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const voiceRoutes = require("./routes/voice");
 require("dotenv").config();
 
-const app = express();
+
 const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+
 app.use("/voice", voiceRoutes);
 app.use(express.static("public")); // Pour servir output.mp3
 

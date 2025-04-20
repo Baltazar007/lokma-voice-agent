@@ -6,34 +6,47 @@ const { generateSpeech } = require("../services/tts");
 
 const router = express.Router();
 
+// Route d’accueil vocale : lance le prompt initial
 router.post("/", async (req, res) => {
   const twiml = new VoiceResponse();
+
   const gather = twiml.gather({
     input: "speech",
-    action: "/voice/process",
+    action: "https://lokma-voice-agent.onrender.com/voice/process", // ⚠️ URL ABSOLUE
     method: "POST",
     timeout: 5,
   });
+
   gather.say("Bonjour et bienvenue chez Lokma. Comment puis-je vous aider ?");
+
+  // Twilio attend un XML
   res.type("text/xml").send(twiml.toString());
 });
 
+// Route appelée après que l'utilisateur a parlé
 router.post("/process", async (req, res) => {
   const speechText = req.body.SpeechResult || "Demande non comprise";
+  console.log("📞 Voix utilisateur :", speechText);
+
   const aiReply = await generateResponse(speechText);
+  console.log("🤖 Réponse IA :", aiReply);
+
   await sendSummaryEmail(speechText, aiReply);
 
   const audioPath = await generateSpeech(aiReply);
-
-  const twiml = new VoiceResponse();
   console.log("🎧 Lien audio envoyé à Twilio :", audioPath);
 
+  const twiml = new VoiceResponse();
+
   if (audioPath) {
-    twiml.play(audioPath); // joue le fichier MP3
+    twiml.play(audioPath); // voix naturelle ElevenLabs
   } else {
-    twiml.say("Je suis désolée, une erreur s’est produite.");
+    twiml.say(aiReply); // fallback robot
   }
-  twiml.redirect("/voice");
+
+  // Boucle vers /voice pour continuer la conversation
+  twiml.redirect("https://lokma-voice-agent.onrender.com/voice");
+
   res.type("text/xml").send(twiml.toString());
 });
 
