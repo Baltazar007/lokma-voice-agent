@@ -11,11 +11,12 @@ router.post("/", async (req, res) => {
 
   const gather = twiml.gather({
     input: "speech",
-    action: "https://lokma-voice-agent.onrender.com/voice/process",
+    action: "https://lokma-voice-agent.onrender.com/voice/process", // ← URL complète
     method: "POST",
     timeout: 5,
   });
 
+  // Seulement ce texte ici, c’est la voix robot d’intro
   gather.say("Bonjour et bienvenue chez Lokma. Comment puis-je vous aider ?");
 
   res.type("text/xml").send(twiml.toString());
@@ -36,14 +37,15 @@ router.post("/process", async (req, res) => {
   const twiml = new VoiceResponse();
 
   if (audioPath) {
-    twiml.pause({ length: 1 }); // petit délai
-    twiml.play(audioPath);
+    // Petite pause pour s'assurer que le fichier est bien prêt
+    twiml.pause({ length: 1 });
+    twiml.play(audioPath); // ✅ joue la vraie voix IA
   } else {
-    twiml.say(aiReply);
+    twiml.say(aiReply); // fallback robot
   }
 
+  // Boucle
   twiml.redirect("https://lokma-voice-agent.onrender.com/voice");
-
   res.type("text/xml").send(twiml.toString());
 });
 
