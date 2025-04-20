@@ -1,11 +1,25 @@
-# Lokma Voice Assistant
+# 📞 Lokma Voice Agent – Assistant IA vocal
 
-Agent vocal IA pour répondre aux appels des clients et livreurs pour Lokma.
+Ce projet est un agent vocal intelligent pour répondre automatiquement aux appels des clients Lokma. Il utilise OpenAI pour comprendre les demandes et Twilio pour gérer les appels.
 
-## Lancer le projet
-1. Installer Node.js
-2. Copier `.env.example` → `.env` et remplir les variables
-3. Installer les dépendances : `npm install`
-4. Lancer le serveur : `node index.js`
-5. Connecter l'URL publique à Twilio (via Ngrok ou déploiement)
+---
+
+## 🚀 Déploiement sur Render
+
+### 1. Configuration Render
+
+- **Root Directory** : `.`
+- **Build Command** : `npm install`
+- **Start Command** : `node index.js`
+- **Node.js version** : par défaut (ex: 22.x)
+
+
+
+---
+
+### 3. Connecter à Twilio
+
+1. Va sur [console Twilio](https://console.twilio.com)
+2. Sélectionne ton numéro dans **Phone Numbers**
+3. Dans la section **A CALL COMES IN**, mets :
 
