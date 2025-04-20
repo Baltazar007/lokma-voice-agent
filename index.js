@@ -9,7 +9,7 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 
-const mime = require("mime-types");
+//const mime = require("mime-types");
 
 app.use((req, res, next) => {
   if (req.url.endsWith(".mp3")) {
