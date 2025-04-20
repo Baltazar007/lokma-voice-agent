@@ -9,6 +9,13 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 
+const mime = require("mime");
+app.use((req, res, next) => {
+  if (req.url.endsWith(".mp3")) {
+    res.setHeader("Content-Type", mime.getType("mp3"));
+  }
+  next();
+});
 
 app.use("/voice", voiceRoutes);
 app.use(express.static("public")); // Pour servir output.mp3
