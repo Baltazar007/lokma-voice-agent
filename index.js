@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/voice", voiceRoutes);
+app.use(express.static("public")); // Pour servir output.mp3
 
 app.get("/", (req, res) => res.send("Lokma Voice Assistant is running"));
 
